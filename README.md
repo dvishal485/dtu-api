@@ -5,16 +5,18 @@
 API Link : https://dtu-api.vercel.app/api
 
 Scrapes the following information from [Official DTU Website](http://dtu.ac.in) :
-    - Page Title
-    - Current Note
-    - Imporatant Updates
-    - Current Events
-    - Latest News
-    - First Year Notices
-    - Notices
-    - Jobs
-    - Tenders
-    - Registeration Schedule
+<ul>
+    <li>Page Title</li>
+    <li>Current Note</li>
+    <li>Imporatant Updates</li>
+    <li>Current Events</li>
+    <li>Latest News</li>
+    <li>First Year Notices</li>
+    <li>Notices</li>
+    <li>Jobs</li>
+    <li>Tenders</li>
+    <li>Registeration Schedule</li>
+</ul>
 
 ---
 
