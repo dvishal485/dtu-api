@@ -48,7 +48,7 @@ def dtu() -> object:
     jobs = latest_tab_extractor(latestTab[2])
     tenders = latest_tab_extractor(latestTab[3])
     firstYear = latest_tab_extractor(latestTab[4])
-    registration = latest_tab_extractor(latestTab[5])
+    registeration = latest_tab_extractor(latestTab[5])
     events = latest_tab_extractor(latestTab[6])
 
     finalResult = {
@@ -59,7 +59,7 @@ def dtu() -> object:
         "events": events,
         "notices": notices,
         "first_year_notices": firstYear,
-        "registration_schedule": registration,
+        "registeration_schedule": registeration,
         "tenders": tenders,
         "jobs": jobs,
     }
