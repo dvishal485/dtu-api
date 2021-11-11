@@ -18,7 +18,7 @@ def dtu() -> object:
     for data in marqueeLeft.find_all('a'):
         if data.text != None and not "»" in data.text:
             sub.append({
-                "name": data.text.strip(),
+                "name": data.text.replace('»', '').strip(),
                 "link": convert_link(data.get("href"))
             })
         else:
@@ -28,7 +28,7 @@ def dtu() -> object:
                     "sub_list": sub
                 })
                 sub = []
-            text = data.text
+            text = data.text.replace('»', '').strip()
             if data.get("href") != None:
                 impUpdates.append({
                     "name": text,
