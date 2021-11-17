@@ -61,7 +61,14 @@ The output for every field is in either one of the two formats :
         {
             "name": "Title of sub-information 2",
             "link": "link_to_information"
-        } // and so on...
+        }
     ]
 }
 ```
+
+---
+
+## License & Copyright
+
+  - This Project is [Apache-2.0](./LICENSE) Licensed
+  - Copyright 2021 [Vishal Das](https://github.com/dvishal485)
