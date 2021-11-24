@@ -34,12 +34,17 @@ def dtu() -> object:
                     "name": text,
                     "link": convert_link(data.get("href"))
                 })
-
-    marqueeLeft = soup.find(direction="left")
-    note = {
-        "name": marqueeLeft.a.string.strip(),
-        "link": convert_link(marqueeLeft.a.get("href"))
-    }
+    try:
+        marqueeLeft = soup.find(direction="left")
+        note = {
+            "name": marqueeLeft.a.string.strip(),
+            "link": convert_link(marqueeLeft.a.get("href"))
+        }
+    except:
+        note = {
+            "name": "Nothing new here",
+            "link": "http://dtu.ac.in"
+        }
 
     latestTab = soup.find_all("div", class_="latest_tab")
 
@@ -83,36 +88,44 @@ def latest_tab_extractor(html_component: Tag) -> list:
     from DTU Website into meaningful Array
     '''
     result = []
-    item: Tag
-    for item in html_component.find_all("li"):
-        aTag = item.find_all("a")
-        if len(aTag) > 1:
-            sub = []
-            i: Tag
-            for i in aTag:
-                sub.append({
-                    "name": str(i.get_text()).replace('||', '').strip(),
-                    "link": convert_link(i.get("href"))
-                })
-            if item.a.get("href") == None:
-                if item.h6.string == None and aTag[0].link == None:
-                    name = aTag[0].get_text()
-                    sub.pop(0)
+    try:
+        item: Tag
+        for item in html_component.find_all("li"):
+            aTag = item.find_all("a")
+            if len(aTag) > 1:
+                sub = []
+                i: Tag
+                for i in aTag:
+                    sub.append({
+                        "name": str(i.get_text()).replace('||', '').strip(),
+                        "link": convert_link(i.get("href"))
+                    })
+                if item.a.get("href") == None:
+                    if item.h6.string == None and aTag[0].link == None:
+                        name = aTag[0].get_text()
+                        sub.pop(0)
+                    else:
+                        name = item.h6.string
+                    result.append({
+                        "name": name.strip(),
+                        "sub_list": sub
+                    })
                 else:
-                    name = item.h6.string
-                result.append({
-                    "name": name.strip(),
-                    "sub_list": sub
-                })
+                    for x in sub:
+                        result.append(x)
             else:
-                for x in sub:
-                    result.append(x)
-        else:
+                result.append({
+                    "name": item.get_text().strip(),
+                    "link": convert_link(item.a.get("href"))
+                })
+            if str(result[len(result)-1]).__contains__('view all'):
+                result.pop()
+                break
+    except:
+        if(len(result) == 0):
             result.append({
-                "name": item.get_text().strip(),
-                "link": convert_link(item.a.get("href"))
+                "name": "End of results",
+                "link": "http://dtu.ac.in/"
             })
-        if str(result[len(result)-1]).__contains__('view all'):
-            result.pop()
-            break
-    return result
+    finally:
+        return result
