@@ -7,14 +7,14 @@ from bs4.element import Tag
 dtuUrl = 'http://dtu.ac.in/'
 
 
-def dtuMainWebsite(extended: bool = False) -> object:
+def dtuMainWebpage(extended: bool = False) -> object:
     '''
-    Fetches information from DTU Official Website and returns the useful data as JSON Object
+    Fetches information from DTU Official Webpage and returns the useful data as JSON Object
 
     Argument -
         `extended` : bool (defaults `false`)
             If `True` returns the whole page information instead of just the main components.
-            Useful when creating alternate version of website so need the website to be scraped entirely.
+            Useful when creating alternate version of webpage so need the webpage to be scraped entirely.
     '''
     page = urllib.request.urlopen(dtuUrl)
     soup = BeautifulSoup(page.read(), 'html.parser')
@@ -146,7 +146,7 @@ def dtuMainWebsite(extended: bool = False) -> object:
 
 def convert_link(url: str) -> str:
     '''
-    Converts relative URL String of DTU Website to exact URL string
+    Converts relative URL String of DTU Webpage to exact URL string
     '''
     if url != None:
         return url.replace('./', dtuUrl)
@@ -156,7 +156,7 @@ def convert_link(url: str) -> str:
 
 def link_bar_extractor(html_component: Tag) -> list:
     '''
-    Converts the HTML under link bar from DTU Website
+    Converts the HTML under link bar from DTU Webpage
     into meaningful Array
     '''
     result = {}
@@ -196,7 +196,7 @@ def link_bar_extractor(html_component: Tag) -> list:
 def side_menu_extractor(html_component: Tag) -> list:
     '''
     Converts the HTML under the side menu
-    from DTU Website containing links to
+    from DTU Webpage containing links to
     various resources into meaningful Array
     '''
     result = []
@@ -214,7 +214,7 @@ def side_menu_extractor(html_component: Tag) -> list:
 def latest_tab_extractor(html_component: Tag) -> list:
     '''
     Converts the HTML under latest_tab div
-    from DTU Website into meaningful Array
+    from DTU Webpage into meaningful Array
     '''
     result = []
     try:
@@ -253,7 +253,7 @@ def latest_tab_extractor(html_component: Tag) -> list:
                     })
 
                 '''
-                As mentioned DTU website is poorly optimized, it because 
+                As mentioned DTU webpage is poorly optimized, it because 
                 it contains all the previous links/data all everything in
                 it's main homepage. It is good to keep old database for
                 record but no need keep it avalible here, but should have
