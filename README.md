@@ -1,12 +1,17 @@
 # dtu-api
 
-[Unofficial Scraper API](https://dtu-api.vercel.app/) for [Delhi Technological University (DTU) Website](http://dtu.ac.in)
+[Unofficial Scraper API](https://dtu-api.vercel.app/) for [Delhi Technological University (DTU) Webpage](http://dtu.ac.in)
 
-API Link : https://dtu-api.vercel.app/api
+API Link : https://dtu-api.vercel.app/
 
-Scrapes the following information from [Official DTU Website](http://dtu.ac.in) :
+Scrapes the following information from [Official DTU Webpage](http://dtu.ac.in) :
 <ul>
     <li>Page Title</li>
+    <li>Last Updated Date & Time</li>
+    <li>Top Menu Bar</li>
+    <li>Menu Bar</li>
+    <li>Sliding Image Showcase</li>
+    <li>Side Menu</li>
     <li>Current Note</li>
     <li>Imporatant Updates</li>
     <li>Current Events</li>
@@ -18,25 +23,52 @@ Scrapes the following information from [Official DTU Website](http://dtu.ac.in) 
     <li>Registeration Schedule</li>
 </ul>
 
+This all pretty much sums up the whole webpage contents!
+
+---
+
+## Usage
+
+API output have been classified into two different types :
+
+1. To extract the usually required data which usually is <b>variable over time</b>, use `api` link : [https://{server_url}/api](https://dtu-api.vercel.app/api)
+
+2. To extract data for full webpage ( required for cloning the webpage ) which is usually <b>constant over time</b>, use the `webpage` link : [https://{server_url}/webpage](https://dtu-api.vercel.app/webpage)
+
 ---
 
 ## Deployment
 
-API is deployed on Vercel. Check out the [API Usage & it's output](https://dtu-api.vercel.app/api)
+API is deployed on Vercel. Check out the [API Usage](#usage) and [Output formats](#output_formats)
 
-To deploy on your own, follow the following steps :
+
+- Deploy on vercel directly through deployment button
+
+    [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdvishal485%2Fdtu-api)
+
+- To deploy to vercel on your own, follow the following steps :
     <ol>
         <li>Fork this repository on your system</li>
-        <li>Make sure you have [installed Vercel CLI](https://vercel.com/cli)</li>
+        <li>Make sure you have <a href="https://vercel.com/cli">installed Vercel CLI</a></li>
         <li>Open the repository in your terminal</li>
         <li>Run command `vercel --prod` and follow the instructions</li>
     </ol> 
 
+- To deploy on `localhost` or on `VPS` :
+
+    1. Install python requirements
+
+        `pip install -r requirements.txt`
+
+    2. Execute [server.py](./server.py)
+
+        `python server.py` or `python3 server.py`
+
 ---
 
-## Output
+## Output Formats
 
-Kindly [refer to sample.json](./sample.json) for understanding using a compact prettified JSON Output of the Scraper API.
+Kindly [refer to sample.json](./sample.json) for understanding using a compact prettified JSON Output of the Scraper API ([Variable Data API](#usage))
 
 
 The output for every field is in either one of the two formats :
@@ -60,9 +92,22 @@ The output for every field is in either one of the two formats :
         },
         {
             "name": "Title of sub-information 2",
-            "link": "link_to_information"
+            "sub_list": [
+                {
+                    "name": "Title of sub-information 1",
+                    "link": "link_to_information"
+                },
+            ]
         }
     ]
+}
+```
+
+If the output is for an image sample, then output will be in format :
+```json
+{
+    "name": "Name of image",
+    "image_link": "link_of_image"
 }
 ```
 
