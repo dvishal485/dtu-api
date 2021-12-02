@@ -129,7 +129,7 @@ def dtuMainWebpage(extended: bool = False) -> object:
 
         return {'title': title,
                 'last_updated': lastUpdated,
-                'topmenu': topMenu,
+                'top_menu': topMenu,
                 'menu': menu,
                 'showcase': showcase,
                 'side_menu': sidemenu,
@@ -184,7 +184,7 @@ def link_bar_extractor(html_component: Tag) -> list:
             except:
                 None
         result = {
-            'heading': heading,
+            'name': heading,
             'sub_list': submenu
         }
     except:
