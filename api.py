@@ -171,7 +171,7 @@ def convert_link(url: str, domain: str = dtuUrl) -> str:
             url.index('://')
             return url
         except:
-            return domain + url
+            return domain + '/' + url
     else:
         return None
 
