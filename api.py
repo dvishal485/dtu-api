@@ -163,8 +163,15 @@ def convert_link(url: str, domain: str = dtuUrl) -> str:
 
     '''
     if url != None:
-        return url.replace(
-            '/', domain, 1) if url[0] == "/" else url.replace('./', domain)
+        if url[0] == '/' or url[0] == '.':
+            return url.replace(
+                '/', domain, 1) if url[0] == "/" else(url.replace('./', domain))
+        try:
+            url.index('http')
+            url.index('://')
+            return url
+        except:
+            return domain + url
     else:
         return None
 
