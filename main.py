@@ -35,3 +35,9 @@ def getAPI():
 def getAPIextended():
     result = api.dtuMainWebpage(extended=True)
     return result
+
+
+@app.get('/exam')
+def getExamAPI():
+    result = api.exam()
+    return result

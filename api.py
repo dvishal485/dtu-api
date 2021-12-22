@@ -1,20 +1,24 @@
-from functools import total_ordering
-from typing import List
 from bs4 import BeautifulSoup
 import urllib.request
 from bs4.element import Tag
 
 dtuUrl = 'http://dtu.ac.in/'
+dtuExamUrl = 'http://exam.dtu.ac.in/result.htm'
 
 
 def dtuMainWebpage(extended: bool = False) -> object:
     '''
-    Fetches information from DTU Official Webpage and returns the useful data as JSON Object
+    Fetches information from DTU Official Webpage
+    ---
+    Argument
 
-    Argument -
-        `extended` : bool (defaults `false`)
+    - `extended` : bool (defaults `false`)
             If `True` returns the whole page information instead of just the main components.
             Useful when creating alternate version of webpage so need the webpage to be scraped entirely.
+    ---
+    Returns
+
+    JSON Object containing all the data from DTU Official Webpage
     '''
     page = urllib.request.urlopen(dtuUrl)
     soup = BeautifulSoup(page.read(), 'html.parser')
@@ -144,12 +148,23 @@ def dtuMainWebpage(extended: bool = False) -> object:
                 'jobs': jobs, }
 
 
-def convert_link(url: str) -> str:
+def convert_link(url: str, domain: str = dtuUrl) -> str:
     '''
-    Converts relative URL String of DTU Webpage to exact URL string
+    Converts relative URL String of DTU Pages to abosute URL string
+    ---
+    Arguments
+
+    - `url` : String containing the URL
+    - `domain` : Parent page URL ( defaults to `http://dtu.ac.in/` )
+    ---
+    Returns
+
+    Returns the absolute URL of the DTU Page
+
     '''
     if url != None:
-        return url.replace('./', dtuUrl)
+        return url.replace(
+            '/', domain, 1) if url[0] == "/" else url.replace('./', domain)
     else:
         return None
 
@@ -274,3 +289,58 @@ def latest_tab_extractor(html_component: Tag) -> list:
             })
     finally:
         return result
+
+
+def exam() -> list:
+    '''
+    Fetches information from DTU Official Result Page
+    ---
+
+    Returns
+
+    List of JSON Objects containing information about Exam Results
+    '''
+    page = urllib.request.urlopen(dtuExamUrl)
+    soup = BeautifulSoup(page.read(), 'html.parser')
+
+    table = soup.find('table', id='AutoNumber1')
+    tableRows = table.find_all('tr')
+    temp: Tag = tableRows[0]
+    try:
+        temp.get_text().index('discrepancy')
+        tableRows.pop(0)
+    except:
+        None
+    headingRow: Tag
+    headingRow = tableRows[0]
+    tableRows.pop(0)
+    headingData = headingRow.find_all('td')
+
+    headings = []
+    i: Tag
+    for i in headingData:
+        headings.append(i.get_text().replace(
+            '\n', '').replace('.', '').lower().strip())  # regex [.\\n]
+
+    data = []
+
+    for i in tableRows:
+        contentData = i.find_all('td')
+        contents = []
+        x: Tag
+        y: Tag
+        counter = 0
+        for x in contentData:
+            links = x.find_all('a')
+            if len(links) > 0:
+                linkAssests = []
+                for y in links:
+                    linkAssests.append({"name": y.get_text().replace('\n', '').strip(),
+                                        "link": convert_link(y.get('href'), dtuExamUrl)})
+                contents.append({headings[counter]: linkAssests})
+            else:
+                contents.append(
+                    {headings[counter]: x.get_text().replace('\n', '').strip()})
+            counter += 1
+        data.append(contents)
+    return data
