@@ -3,7 +3,7 @@ import urllib.request
 from bs4.element import Tag
 
 dtuUrl = 'http://dtu.ac.in/'
-dtuExamUrl = 'http://exam.dtu.ac.in/result.htm'
+dtuExamUrl = 'http://exam.dtu.ac.in'
 
 
 def dtuMainWebpage(extended: bool = False) -> object:
@@ -307,7 +307,7 @@ def exam() -> list:
 
     List of JSON Objects containing information about Exam Results
     '''
-    page = urllib.request.urlopen(dtuExamUrl)
+    page = urllib.request.urlopen(dtuExamUrl + '/result.htm')
     soup = BeautifulSoup(page.read(), 'html.parser')
 
     table = soup.find('table', id='AutoNumber1')

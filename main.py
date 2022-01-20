@@ -21,7 +21,11 @@ def read_root():
         'author': 'dvisha485@gmail.com',
         'author_github': 'https://github.com/dvishal485',
         'description': 'Unofficial API for Delhi Technological University (DTU) webpage',
-        'usage': 'https://dtu-api.vercel.app/api'
+        'usage': {
+            'information': 'https://dtu-api.vercel.app/api',
+            'full_webpage': 'https://dtu-api.vercel.app/webpage',
+            'result_page': 'https://dtu-api.vercel.app/exam'
+        }
     }
 
 
