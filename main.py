@@ -45,3 +45,9 @@ def getAPIextended():
 def getExamAPI():
     result = api.exam()
     return result
+
+
+@app.get('/notices')
+def getAPI():
+    result = api.fetch_notices()
+    return result

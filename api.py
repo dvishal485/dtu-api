@@ -4,6 +4,7 @@ from bs4.element import Tag
 
 dtuUrl = 'http://dtu.ac.in/'
 dtuExamUrl = 'http://exam.dtu.ac.in'
+dtuNoticesUrl = 'http://exam.dtu.ac.in/Notices-n-Circulars.htm'
 
 
 def dtuMainWebpage(extended: bool = False) -> object:
@@ -71,6 +72,8 @@ def dtuMainWebpage(extended: bool = False) -> object:
     firstYear = latest_tab_extractor(latestTab[4])
     registeration = latest_tab_extractor(latestTab[5])
     events = latest_tab_extractor(latestTab[6])
+    more_notices = fetch_notices()
+    notices.extend(more_notices)
 
     # Extracting last updated
     bottomSection = soup.find('div', id='bottom_Section')
@@ -273,16 +276,6 @@ def latest_tab_extractor(html_component: Tag) -> list:
                         'name': item.get_text().strip(),
                         'link': convert_link(item.a.get('href'))
                     })
-
-                '''
-                As mentioned DTU webpage is poorly optimized, it because 
-                it contains all the previous links/data all everything in
-                it's main homepage. It is good to keep old database for
-                record but no need keep it avalible here, but should have
-                a seperate page for the same.
-                Since this old information is pretty useless to most, we will
-                be limiting the results by showing only the default info.
-                '''
                 if str(result[len(result)-1]).__contains__('view all'):
                     result.pop()
                     break
@@ -351,3 +344,30 @@ def exam() -> list:
             counter += 1
         data.append(contents)
     return data
+
+
+def fetch_notices() -> list:
+    '''
+    Fetches notices from DTU Official Notices Page
+    ---
+
+    Returns
+
+    List of JSON Objects containing information about Exam Results
+    '''
+    result = []
+    try:
+        page = urllib.request.urlopen(dtuNoticesUrl)
+        soup = BeautifulSoup(page.read(), 'html.parser')
+        table = soup.table.tbody.find_all('tr', recursive=True)[4]
+        i: Tag
+        for i in table.find_all('tr'):
+            try:
+                result.append({
+                    'name': i.find('td').get_text().replace('\n', '').strip(),
+                    'link': convert_link(i.find('a').get('href'), dtuExamUrl+'/')
+                })
+            except:
+                None
+    finally:
+        return result
